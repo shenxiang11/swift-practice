@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ViewController: UIViewController {
     static let cellReuseIdentifier = "cellReuseIdentifier"
@@ -187,6 +188,19 @@ extension ViewController: UITableViewDataSource {
         cell.textLabel?.text = groupedData[indexPath.section].value[indexPath.item]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let urlStr = "https://m.baidu.com/s?word=青春有你2 \(groupedData[indexPath.section].value[indexPath.item])"
+        
+        guard let url = URL(string: urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else {
+            fatalError("加载 URL 失败")
+        }
+        
+        let vc = SFSafariViewController(url: url)
+        present(vc, animated: true, completion: nil)
     }
 }
 
